@@ -1,13 +1,17 @@
-import java.util.Stack;
 
 public class Main {
     public static  void  main (String[] args){
 
-  String str = "[1 + 2]";
+        Stack stack  = new Stack();
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
 
-  Expression exp = new Expression(str);
+        stack.pop();
+        stack.pop();
+        stack.pop();
 
-  var result = exp.isBalanced();
-        System.out.println(result);
+        System.out.println(stack.isEmpty());
+
     }
 }
