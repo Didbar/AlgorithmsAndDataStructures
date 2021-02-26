@@ -63,6 +63,17 @@ public class Main {
 //        System.out.println(queue.dequeue());
 //        System.out.println(queue.peek());
 
+        PriorityQueue queue = new PriorityQueue();
+
+        queue.add(5);
+        queue.add(2);
+        queue.add(3);
+        while (!queue.isEmpty())
+            System.out.println(queue.remove());
+
+        System.out.println(queue);
+
+
 
 
 
