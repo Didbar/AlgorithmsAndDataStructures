@@ -1,199 +1,205 @@
-import java.sql.SQLOutput;
+
 import java.util.NoSuchElementException;
 
 public class LinkedList {
-
-    private class Node{
+    private class Node {
         private int value;
         private Node next;
 
-        public Node(int value){
+        public Node(int value) {
             this.value = value;
         }
     }
 
     private Node first;
     private Node last;
-    private  int size = 0;
+    private int size;
 
-    public void addLast(int item){
-        var node  = new Node(item);
+    public void addLast(int item) {
+        var node = new Node(item);
 
-        if(isEmpty())
-           first = last = node;
-
+        if (isEmpty())
+            first = last = node;
         else {
-            last.next  = node;
+            last.next = node;
             last = node;
         }
 
         size++;
-
     }
 
-    public void addFirst(int item){
-        var node  = new Node(item);
+    public void addFirst(int item) {
+        var node = new Node(item);
 
-        if(isEmpty()) {
+        if (isEmpty())
             first = last = node;
-        }else {
+        else {
             node.next = first;
             first = node;
         }
+
         size++;
     }
 
-    public int indexOf(int item){
-        int index  = 0;
-        var current = first;
+    private boolean isEmpty() {
+        return first == null;
+    }
 
-        while(current != null){
-            if(current.value == item) return  index;
+    public int indexOf(int item) {
+        int index = 0;
+        var current = first;
+        while (current != null) {
+            if (current.value == item) return index;
             current = current.next;
             index++;
         }
         return -1;
     }
 
-    public boolean contains(int item){
-        var current = first;
+    public boolean contains(int item) {
+        return indexOf(item) != -1;
+    }
 
-        while (current != null){
-            if (current.value == item) return true;
+    public void removeFirst() {
+        if (isEmpty())
+            throw new NoSuchElementException();
+
+        if (first == last)
+            first = last = null;
+        else {
+            var second = first.next;
+            first.next = null;
+            first = second;
+        }
+
+        size--;
+    }
+
+    public void removeLast() {
+        if (isEmpty())
+            throw new NoSuchElementException();
+
+        if (first == last)
+            first = last = null;
+        else {
+            var previous = getPrevious(last);
+            last = previous;
+            last.next = null;
+        }
+
+        size--;
+    }
+
+
+    private Node getPrevious(Node node) {
+        var current = first;
+        while (current != null) {
+            if (current.next == node) return current;
             current = current.next;
         }
-
-        return false;
-    }
-
-    public void  removeFirst(){
-        if (isEmpty()) throw new NoSuchElementException();
-        if (first == last) {
-            first = last =null;
-            size--;
-            return;
-        }
-        var second  = first.next;
-
-        first.next = null;
-        first = second;
-
-        size--;
-    }
-
-
-    public void removeLast(){
-        if(isEmpty()) throw new NoSuchElementException();
-
-        if(first == last){
-            first = last = null;
-            size = 0;
-            return;
-        }
-
-        var previous  = getPrevious(last);
-        last = previous;
-        last.next = null;
-
-        size--;
+        return null;
     }
 
     public int size() {
         return size;
     }
 
-    public int[] toArray(){
+    public int[] toArray() {
         int[] array = new int[size];
-
+        var current = first;
         var index = 0;
-        var cuurent = first ;
-
-        while(cuurent != null){
-            array[index++] = cuurent.value;
-            cuurent = cuurent.next;
+        while (current != null) {
+            array[index++] = current.value;
+            current = current.next;
         }
 
         return array;
     }
 
-    public void reverse(){
-        if(isEmpty()) return;
-        if (first == last ) return;
+    public void reverse() {
+        if (isEmpty()) return;
 
-//        int i =0;
-//        int half = size /2;
-//        var cur = first;
-//        var prev = last;
-//        var left = cur.value;
-//        var right = prev.value;
-//
-//        while( i < half ){
-//
-//            cur.value = right;
-//            prev.value = left;
-//            cur = cur.next;
-//            prev = getPrevious(prev);
-//            left = cur.value;
-//            right = prev.value;
-//            i++;
-//        }
-//
-
-        var previous  = first;
-        var current =  first.next;
-        while (current != null){
+        var previous = first;
+        var current = first.next;
+        while (current != null) {
             var next = current.next;
             current.next = previous;
             previous = current;
             current = next;
         }
 
-
         last = first;
         last.next = null;
         first = previous;
     }
 
-    public int getKth(int kth){
+    public int getKthFromTheEnd(int k) {
+        if (isEmpty())
+            throw new IllegalStateException();
 
-        if (kth > size || kth <= 0) throw new IllegalArgumentException();
-        if (isEmpty()) throw  new IllegalStateException();
-
-        var result =  first;
-        var cur = first;
-        int distance =kth -1;
-        cur  = getDistanceElement(distance, cur);
-        while(cur.next  != null){
-            result = result.next;
-            cur = cur.next;
+        var a = first;
+        var b = first;
+        for (int i = 0; i < k - 1; i++) {
+            b = b.next;
+            if (b == null)
+                throw new IllegalArgumentException();
         }
-
-        return result.value;
+        while (b != last) {
+            a = a.next;
+            b = b.next;
+        }
+        return a.value;
     }
 
-    //PRIVATE METHODS
-    private  Node getDistanceElement(int distance , Node cur){
-        while(distance > 0){
-            cur = cur.next;
-            distance--;
+    public void printMiddle() {
+        if (isEmpty())
+            throw new IllegalStateException();
+
+        var a = first;
+        var b = first;
+        while (b != last && b.next != last) {
+            b = b.next.next;
+            a = a.next;
         }
-        return cur;
+
+        if (b == last)
+            System.out.println(a.value);
+        else
+            System.out.println(a.value + ", " + a.next.value);
     }
 
-    private boolean isEmpty(){
-        return first == null;
+
+    //Floyd's Cycle-finding Algorithm.
+    public boolean hasLoop() {
+        var slow = first;
+        var fast = first;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast)
+                return true;
+        }
+
+        return false;
     }
 
-    private Node getPrevious(Node node){
-        var current = first;
+    public static LinkedList createWithLoop() {
+        var list = new LinkedList();
+        list.addLast(10);
+        list.addLast(20);
+        list.addLast(30);
 
-        while (current != last){
-            if(current.next == node) return current;
-            current = current.next;
+        // Get a reference to 30
+        var node = list.last;
 
+        list.addLast(40);
+        list.addLast(50);
 
-        }
-        return null;
+        // Create the loop
+        list.last.next = node;
 
+        return list;
     }
 }

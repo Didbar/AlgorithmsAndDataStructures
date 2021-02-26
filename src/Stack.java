@@ -3,11 +3,10 @@ import java.util.Arrays;
 public class Stack {
 
     private int count;
-
     private int[] items = new int[10];
 
     public  void  push(int item){
-        if(count == items.length) throw new StackOverflowError();
+         if(count == items.length) throw new StackOverflowError();
         items[count++] = item;
     }
     public int pop(){
