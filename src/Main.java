@@ -1,7 +1,3 @@
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.Stack;
-
 public class Main {
     public static  void  main (String[] args){
 
@@ -62,18 +58,29 @@ public class Main {
 //        queue.enqueue(3);
 //        System.out.println(queue.dequeue());
 //        System.out.println(queue.peek());
+//
+//        PriorityQueue queue = new PriorityQueue();
+//
+//        queue.add(5);
+//        queue.add(2);
+//        queue.add(3);
+//        while (!queue.isEmpty())
+//            System.out.println(queue.remove());
+//
+//        System.out.println(queue);
+//
+//          TREEES
 
-        PriorityQueue queue = new PriorityQueue();
 
-        queue.add(5);
-        queue.add(2);
-        queue.add(3);
-        while (!queue.isEmpty())
-            System.out.println(queue.remove());
-
-        System.out.println(queue);
-
-
+    Tree tree = new Tree();
+    tree.insert(7);
+    tree.insert(4);
+    tree.insert(9);
+    tree.insert(1);
+    tree.insert(6);
+    tree.insert(8);
+    tree.insert(10);
+        System.out.println(tree.size());
 
 
 
